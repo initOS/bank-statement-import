@@ -199,7 +199,7 @@ class AccountBankStatementImportPayPalParser(models.TransientModel):
         partner_bank_account = line["partner_bank_account"]
 
         if invoice:
-            invoice = _("Invoice %s") % invoice
+            invoice = _("Invoice %s - %s") % (invoice, description)
         note = "{} {}".format(description, transaction_id)
         if details:
             note += ": %s" % details
@@ -209,7 +209,7 @@ class AccountBankStatementImportPayPalParser(models.TransientModel):
         unique_import_id = "{}-{}".format(transaction_id, int(timestamp.timestamp()))
         name = (invoice or details or description or "",)
         transaction = {
-            "name": invoice or details or description or "",
+            "name": invoice or transaction_id or details or description or "",
             "amount": str(gross_amount),
             "date": timestamp,
             "payment_ref": note,
