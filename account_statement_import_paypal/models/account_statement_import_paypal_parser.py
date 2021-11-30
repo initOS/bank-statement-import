@@ -209,7 +209,9 @@ class AccountBankStatementImportPayPalParser(models.TransientModel):
         unique_import_id = "{}-{}".format(transaction_id, int(timestamp.timestamp()))
         name = (invoice or details or description or "",)
         transaction = {
-            "name": invoice or transaction_id or details or description or "",
+            "name": invoice
+            if invoice
+            else "%s %s" % (transaction_id, details or description or ""),
             "amount": str(gross_amount),
             "date": timestamp,
             "payment_ref": note,
